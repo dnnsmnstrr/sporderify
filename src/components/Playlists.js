@@ -51,7 +51,7 @@ const Playlists = ({token}) => {
   }
 
   return (
-    <Grid container spacing={2}>
+    <Grid container>
       <Toolbar onSortDown={() => handleSort('desc')} onSortUp={() => handleSort('asc')}/>
       <Grid item xs={12}>
         {isSorting && <LinearProgress />}
@@ -62,8 +62,8 @@ const Playlists = ({token}) => {
             return playlists && playlists.data ? (
               <List >
                 {playlists.data.items.map(playlist => {
-                  if ((data && data.id && data.id === playlist.owner.id) || playlist.collaborative) {
-                    return <ListItem button selected={playlist.id === selectedPlaylist.id} onClick={() => setSelectedPlaylist(playlist)} key={playlist.id}>{playlist.name}</ListItem>
+                  if ((data && data.id && playlist.owner && data.id === playlist.owner.id) || playlist.collaborative) {
+                    return <ListItem button selected={playlist && selectedPlaylist && playlist.id === selectedPlaylist.id} onClick={() => setSelectedPlaylist(playlist)} key={playlist.id}>{playlist.name}</ListItem>
                   }
                   return null
                 })}
@@ -77,7 +77,7 @@ const Playlists = ({token}) => {
           {(playlist,) => {
             if (playlist.data && playlist.data.tracks.items) {
               return playlist.data.tracks.items.map(track => (
-                <h1 key={track.track.id}>{track.track.name}</h1>
+                <h1 style={{ paddingLeft: '20px'}}key={track.track.id}>{track.track.name}</h1>
               ))
             }
             return playlist && playlist.name ? <h1>{playlist.name}</h1> : null
