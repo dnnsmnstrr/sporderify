@@ -21,23 +21,21 @@ const Playlists = ({token}) => {
 
   const reorderPlaylist = async (direction = 'asc') => {
     if (selectedPlaylist && selectedPlaylist.id) {
-      let finishedSorting = false
-      while (!finishedSorting) {
-        const tracks = await spotifyApi.getPlaylistTracks(selectedPlaylist.id)
-        let changedOrder = false
-        for (var i = 0; i < tracks.items.length - 1; i++) {
-          const currentLength = tracks.items[i].track.name.length
-          const nextLength = tracks.items[i+1].track.name.length
-          // console.log('currentLength, nextLength', currentLength, nextLength)
-          if (direction === 'asc' ? currentLength > nextLength : currentLength < nextLength) {
-            await spotifyApi.reorderTracksInPlaylist(selectedPlaylist.id, i+1, i)
-            changedOrder = true
-          }
+      const tracks = await spotifyApi.getPlaylistTracks(selectedPlaylist.id)
+      const sortedTracks = [...tracks.items].sort((a, b) => {
+        console.log('direction', direction, a, b)
+        if (direction === 'asc') {
+          return a.track.name.length - b.track.name.length
         }
-        finishedSorting = !changedOrder
-      }
+        return b.track.name.length - a.track.name.length
+      })
+      const sortedTitles = sortedTracks.map(({track: {name}}) => name)
+      console.log('sortedTitles', sortedTitles)
+      const sortedUris = sortedTracks.map(({track: {uri}}) => uri)
+      await spotifyApi.replaceTracksInPlaylist(selectedPlaylist.id, sortedUris)
     }
   }
+
 
   useEffect(() => console.log('selectedPlaylist', selectedPlaylist), [selectedPlaylist])
 
