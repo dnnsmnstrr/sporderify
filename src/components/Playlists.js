@@ -3,12 +3,17 @@ import { UserPlaylists, Playlist } from 'react-spotify-api'
 import {
   Grid
 } from '@material-ui/core'
+import Toolbar from './Toolbar'
 const Playlists = (props) => {
   const [selectedPlaylist, setSelectedPlaylist] = useState('')
+
+
   useEffect(() => console.log('selectedPlaylist', selectedPlaylist), [selectedPlaylist])
+
   return (
     <Grid container>
-      <Grid item>
+      <Toolbar />
+      <Grid item xs='6'>
         <UserPlaylists>
           {(playlists, loading, error) =>{
               return playlists && playlists.data ? (
@@ -19,18 +24,18 @@ const Playlists = (props) => {
           }
         </UserPlaylists>
       </Grid>
-      <Grid item>
-        <Playlist id={selectedPlaylist.id}>
+      <Grid item xs='6'>
+        {selectedPlaylist ? <Playlist id={selectedPlaylist.id}>
           {(playlist, loading, error) => {
             console.log('playlist', playlist)
-            if (playlist.data.tracks.items) {
+            if (playlist.data && playlist.data.tracks.items) {
               return playlist.data.tracks.items.map(track => (
                 <h1 key={track.track.id}>{track.track.name}</h1>
             ))
             }
-            return playlist ? <h1>{playlist.name}</h1> : null
+            return playlist && playlist.name ? <h1>{playlist.name}</h1> : null
           }}
-        </Playlist>
+        </Playlist> : 'Select a Playlist'}
       </Grid>
     </Grid>
   )

@@ -1,22 +1,23 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { SpotifyApiContext } from 'react-spotify-api'
 import Cookies from 'js-cookie'
 
 import { SpotifyAuth, Scopes } from 'react-spotify-auth'
 import 'react-spotify-auth/dist/index.css'
 
-import {Playlists} from './Playlist'
+import {Playlists} from './components/Playlists'
 
 const {REACT_APP_CLIENT_ID = ''} = process.env
 
 const App = () => {
-  const token = Cookies.get('spotifyAuthToken')
-  console.log('REACT_APP_CLIENT_ID', REACT_APP_CLIENT_ID)
+  const [token, setToken] = useState("")
+  useEffect(() => {
+    setToken(Cookies.get('spotifyAuthToken'))
+  }, [])
   return (
     <div className='app'>
       {token ? (
         <SpotifyApiContext.Provider value={token}>
-          <p>You are authorized with token: {token}</p>
           <Playlists />
         </SpotifyApiContext.Provider>
       ) : (
