@@ -56,7 +56,7 @@ const Playlists = ({token}) => {
       <Grid item xs={12}>
         {isSorting && <LinearProgress />}
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={3}>
         <UserPlaylists>
           {(playlists) =>{
             return playlists && playlists.data ? (
@@ -72,7 +72,7 @@ const Playlists = ({token}) => {
           }
         </UserPlaylists>
       </Grid>
-      <Grid item xs={8}>
+      <Grid item xs={9}>
         {selectedPlaylist ? <Playlist id={selectedPlaylist.id}>
           {(playlist,) => {
             if (playlist.data && playlist.data.tracks.items) {
