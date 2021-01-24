@@ -31,13 +31,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Toolbar = ({onSortDown, onSortUp}) => {
   const classes = useStyles();
-  const { data, loading, error } = useUser()
+  const { data } = useUser()
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
-  const handleChange = (event) => {
-    // setAuth(event.target.checked);
-  };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -86,12 +82,12 @@ const Toolbar = ({onSortDown, onSortUp}) => {
         </Typography>
         <Tooltip title='Ascending'>
           <IconButton className={classes.menuButton} color="inherit" aria-label="menu" onClick={onSortUp}>
-            <ArrowDownward />
+            <ArrowUpward />
           </IconButton>
         </Tooltip>
         <Tooltip title='Descending'>
           <IconButton className={classes.menuButton} color="inherit" aria-label="menu" onClick={onSortDown}>
-            <ArrowUpward />
+            <ArrowDownward />
           </IconButton>
         </Tooltip>
       </MuiToolbar>

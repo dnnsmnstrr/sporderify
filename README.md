@@ -1,3 +1,9 @@
+# Sp*order*ify
+
+Order your Spotify playlists by title length.
+
+Who needs this? No one. But I made it anyway.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
