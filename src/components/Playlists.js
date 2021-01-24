@@ -22,22 +22,21 @@ const Playlists = ({token}) => {
     if (selectedPlaylist && selectedPlaylist.id) {
       let offset = 0
       let allTracks = []
-      let reached
+
       while (allTracks.length < selectedPlaylist.tracks.total) {
         const tracks = await spotifyApi.getPlaylistTracks(selectedPlaylist.id, {offset})
         allTracks = allTracks.concat(tracks.items)
-        console.log('tracks', tracks, allTracks)
         offset += 100
       }
+
       const sortedTracks = allTracks.sort((a, b) => {
-        console.log('direction', direction, a, b)
         if (direction === 'asc') {
           return a.track.name.length - b.track.name.length
         }
         return b.track.name.length - a.track.name.length
       })
+
       const sortedTitles = sortedTracks.map(({track: {name}}) => name)
-      console.log('sortedTitles', sortedTitles)
       const sortedUris = sortedTracks.map(({track: {uri}}) => uri)
       const chunks = splitToChunks(sortedUris, 100)
       //replace playlist with first chunk of tracks
@@ -48,9 +47,6 @@ const Playlists = ({token}) => {
       }
     }
   }
-
-
-  useEffect(() => console.log('selectedPlaylist', selectedPlaylist), [selectedPlaylist])
 
   const handleSort = async (direction = 'asc') => {
     setIsSorting(true)
@@ -63,7 +59,7 @@ const Playlists = ({token}) => {
 
   return (
     <Grid container>
-      <Toolbar onSortDown={() => handleSort('desc')} onSortUp={() => handleSort('asc')}/>
+      <Toolbar selectedPlaylist={selectedPlaylist} onSortDown={() => handleSort('desc')} onSortUp={() => handleSort('asc')}/>
       <Grid item xs={12}>
         {isSorting && <LinearProgress />}
       </Grid>
