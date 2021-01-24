@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
 const Toolbar = ({onSortDown, onSortUp}) => {
   const classes = useStyles();
   const { data, loading, error } = useUser()
-  console.log('data', data)
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
