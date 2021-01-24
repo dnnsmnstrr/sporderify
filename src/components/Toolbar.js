@@ -49,7 +49,7 @@ const Toolbar = ({onSort}) => {
   return (
     <AppBar position="static">
       <MuiToolbar>
-        <IconButton className={classes.menuButton} color="inherit" aria-label="menu">
+        <IconButton className={classes.menuButton} color="inherit" aria-label="menu" onClick={onSort}>
           <ArrowDownward />
         </IconButton>
         {data && (

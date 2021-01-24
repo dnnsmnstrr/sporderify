@@ -18,14 +18,14 @@ const App = () => {
     <div className='app'>
       {token ? (
         <SpotifyApiContext.Provider value={token}>
-          <Playlists />
+          <Playlists token={token} />
         </SpotifyApiContext.Provider>
       ) : (
         // Display the login page
         <SpotifyAuth
           redirectUri='http://localhost:3000/callback'
           clientID={REACT_APP_CLIENT_ID}
-          scopes={[Scopes.userReadPrivate, Scopes.userReadEmail]} // either style will work
+          scopes={[Scopes.all]} // either style will work
         />
       )}
     </div>

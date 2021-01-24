@@ -4,15 +4,25 @@ import {
   Grid
 } from '@material-ui/core'
 import Toolbar from './Toolbar'
-const Playlists = (props) => {
+import {sortByChars} from '../api'
+import Spotify from 'spotify-web-api-js'
+const Playlists = ({token}) => {
   const [selectedPlaylist, setSelectedPlaylist] = useState('')
 
+  const spotifyApi = new Spotify()
+  spotifyApi.setAccessToken(token)
 
+  useEffect(() => {
+    spotifyApi.skipToNext()
+  }, [])
+  const reorderPlaylist = async () => {
+    spotifyApi.reorderTracksInPlaylist(selectedPlaylist.id, 1, 0)
+  }
   useEffect(() => console.log('selectedPlaylist', selectedPlaylist), [selectedPlaylist])
 
   return (
     <Grid container>
-      <Toolbar />
+      <Toolbar onSort={() => reorderPlaylist()}/>
       <Grid item xs='6'>
         <UserPlaylists>
           {(playlists, loading, error) =>{
