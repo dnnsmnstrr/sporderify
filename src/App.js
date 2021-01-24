@@ -7,7 +7,7 @@ import 'react-spotify-auth/dist/index.css'
 
 import {Playlists} from './components/Playlists'
 
-const {REACT_APP_CLIENT_ID = ''} = process.env
+const {REACT_APP_CLIENT_ID = '', REACT_APP_CALLBACK = ''} = process.env
 
 const App = () => {
   const [token, setToken] = useState("")
@@ -23,7 +23,7 @@ const App = () => {
       ) : (
         // Display the login page
         <SpotifyAuth
-          redirectUri='http://localhost:3000/callback'
+          redirectUri={REACT_APP_CALLBACK}
           clientID={REACT_APP_CLIENT_ID}
           scopes={[Scopes.all]}
         />
