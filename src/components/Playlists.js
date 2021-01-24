@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import { UserPlaylists, Playlist } from 'react-spotify-api'
 import {
-  Grid
+  Grid,
+  LinearProgress
 } from '@material-ui/core'
 import Toolbar from './Toolbar'
 import Spotify from 'spotify-web-api-js'
 const Playlists = ({token}) => {
   const [selectedPlaylist, setSelectedPlaylist] = useState('')
-
+  const [isSorting, setIsSorting] = useState(false)
   const spotifyApi = new Spotify()
   spotifyApi.setAccessToken(token)
 
@@ -15,7 +16,7 @@ const Playlists = ({token}) => {
     // spotifyApi.skipToNext()
   }, [])
 
-  const reorderPlaylist = async () => {
+  const reorderPlaylist = async (direction = 'asc') => {
     if (selectedPlaylist && selectedPlaylist.id) {
       let finishedSorting = false
       while (!finishedSorting) {
@@ -25,7 +26,7 @@ const Playlists = ({token}) => {
           const currentLength = tracks.items[i].track.name.length
           const nextLength = tracks.items[i+1].track.name.length
           console.log('currentLength, nextLength', currentLength, nextLength)
-          if (currentLength > nextLength) {
+          if (direction === 'asc' ? currentLength > nextLength : currentLength < nextLength) {
             await spotifyApi.reorderTracksInPlaylist(selectedPlaylist.id, i+1, i)
             changedOrder = true
           }
@@ -34,16 +35,24 @@ const Playlists = ({token}) => {
         finishedSorting = !changedOrder
       }
     }
-
   }
   useEffect(() => console.log('selectedPlaylist', selectedPlaylist), [selectedPlaylist])
 
+  const handleSort = async (direction = 'asc') => {
+    setIsSorting(true)
+    await reorderPlaylist(direction)
+    setIsSorting(false)
+  }
+
   return (
     <Grid container>
-      <Toolbar onSort={reorderPlaylist}/>
+      <Toolbar onSortDown={() => handleSort('desc')} onSortUp={handleSort}/>
+      <Grid item xs='12'>
+        {isSorting && <LinearProgress />}
+      </Grid>
       <Grid item xs='6'>
         <UserPlaylists>
-          {(playlists, loading, error) =>{
+          {(playlists) =>{
               return playlists && playlists.data ? (
                   playlists.data.items.map(playlist => (
                       <h1 onClick={() => setSelectedPlaylist(playlist)}key={playlist.id}>{playlist.name}</h1>

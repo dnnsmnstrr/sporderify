@@ -5,6 +5,7 @@ import {
   AppBar,
   Toolbar as MuiToolbar,
   Typography,
+  Tooltip,
   IconButton,
   Menu,
   MenuItem
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Toolbar = ({onSort}) => {
+const Toolbar = ({onSortDown, onSortUp}) => {
   const classes = useStyles();
   const { data, loading, error } = useUser()
   console.log('data', data)
@@ -46,12 +47,10 @@ const Toolbar = ({onSort}) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <AppBar position="static">
       <MuiToolbar>
-        <IconButton className={classes.menuButton} color="inherit" aria-label="menu" onClick={onSort}>
-          <ArrowDownward />
-        </IconButton>
         {data && (
           <div>
             <IconButton
@@ -60,7 +59,7 @@ const Toolbar = ({onSort}) => {
               aria-haspopup="true"
               onClick={handleMenu}
               color="inherit"
-            >
+              >
               <AccountCircle />
             </IconButton>
             <Menu
@@ -77,12 +76,25 @@ const Toolbar = ({onSort}) => {
               }}
               open={open}
               onClose={handleClose}
-            >
+              >
               <MenuItem onClick={handleClose}>{data.display_name}</MenuItem>
               <MenuItem onClick={handleClose}>Followers: {data.followers.total}</MenuItem>
             </Menu>
           </div>
         )}
+        <Typography variant="h6" className={classes.title}>
+            Sort a playlist by title length
+        </Typography>
+        <Tooltip title='Ascending'>
+          <IconButton className={classes.menuButton} color="inherit" aria-label="menu" onClick={onSortUp}>
+            <ArrowDownward />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title='Descending'>
+          <IconButton className={classes.menuButton} color="inherit" aria-label="menu" onClick={onSortDown}>
+            <ArrowUpward />
+          </IconButton>
+        </Tooltip>
       </MuiToolbar>
     </AppBar>
   )
