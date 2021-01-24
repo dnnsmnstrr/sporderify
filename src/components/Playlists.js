@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react'
 import { UserPlaylists, Playlist, useUser } from 'react-spotify-api'
 import {
   Grid,
+  List,
+  ListItem,
   LinearProgress
 } from '@material-ui/core'
 import Toolbar from './Toolbar'
@@ -49,26 +51,28 @@ const Playlists = ({token}) => {
   }
 
   return (
-    <Grid container>
+    <Grid container spacing={2}>
       <Toolbar onSortDown={() => handleSort('desc')} onSortUp={() => handleSort('asc')}/>
       <Grid item xs={12}>
         {isSorting && <LinearProgress />}
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={4}>
         <UserPlaylists>
           {(playlists) =>{
-              return playlists && playlists.data ? (
-                  playlists.data.items.map(playlist => {
-                    if ((data && data.id && data.id === playlist.owner.id) || playlist.collaborative) {
-                      return <h1 onClick={() => setSelectedPlaylist(playlist)} key={playlist.id}>{playlist.name}</h1>
-                    }
-                    return null
-                  })
-              ) : null}
+            return playlists && playlists.data ? (
+              <List >
+                {playlists.data.items.map(playlist => {
+                  if ((data && data.id && data.id === playlist.owner.id) || playlist.collaborative) {
+                    return <ListItem button selected={playlist.id === selectedPlaylist.id} onClick={() => setSelectedPlaylist(playlist)} key={playlist.id}>{playlist.name}</ListItem>
+                  }
+                  return null
+                })}
+              </List>
+            ) : null}
           }
         </UserPlaylists>
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={8}>
         {selectedPlaylist ? <Playlist id={selectedPlaylist.id}>
           {(playlist,) => {
             if (playlist.data && playlist.data.tracks.items) {
