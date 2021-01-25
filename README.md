@@ -1,8 +1,12 @@
-# Sp*order*ify
+# *Sort*ify
 
-Order your Spotify playlists by title length.
+Order your Spotify playlists by title length. Ascending or Descending.
 
 Who needs this? No one. But I made it anyway.
+
+Consider making a backup of your playlist before trying any of this. 
+
+___
 
 # Getting Started with Create React App
 
