@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import { UserPlaylists, Playlist, useUser } from 'react-spotify-api'
 import {
-  Box,
   Grid,
   List,
   ListItem,
@@ -18,7 +17,10 @@ const Playlists = ({token}) => {
   const spotifyApi = new Spotify()
   spotifyApi.setAccessToken(token)
 
-  const splitToChunks = (arr, size) => arr.reduce((acc, e, i) => (i % size ? acc[acc.length - 1].push(e) : acc.push([e]), acc), []);
+  const splitToChunks = (arr, size) => arr.reduce((acc, e, i) => {
+    i % size ? acc[acc.length - 1].push(e) : acc.push([e])
+    return acc
+  }, []);
 
   const reorderPlaylist = async (direction = 'asc') => {
     if (selectedPlaylist && selectedPlaylist.id) {
@@ -38,7 +40,6 @@ const Playlists = ({token}) => {
         return b.track.name.length - a.track.name.length
       })
 
-      const sortedTitles = sortedTracks.map(({track: {name}}) => name)
       const sortedUris = sortedTracks.map(({track: {uri}}) => uri)
       const chunks = splitToChunks(sortedUris, 100)
       //replace playlist with first chunk of tracks
