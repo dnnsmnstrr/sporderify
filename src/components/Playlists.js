@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import { UserPlaylists, Playlist, useUser } from 'react-spotify-api'
 import {
+  Box,
   Grid,
   List,
   ListItem,
-  LinearProgress
+  LinearProgress,
+  Typography
 } from '@material-ui/core'
 import Toolbar from './Toolbar'
 import Spotify from 'spotify-web-api-js'
@@ -58,7 +60,7 @@ const Playlists = ({token}) => {
   }
 
   return (
-    <Grid container>
+    <Grid container >
       <Toolbar selectedPlaylist={selectedPlaylist} onSortDown={() => handleSort('desc')} onSortUp={() => handleSort('asc')}/>
       <Grid item xs={12}>
         {isSorting && <LinearProgress />}
@@ -66,6 +68,9 @@ const Playlists = ({token}) => {
       <Grid item xs={3}>
         <UserPlaylists>
           {(playlists) =>{
+            if (!selectedPlaylist) {
+              setSelectedPlaylist(playlists.data.items[0])
+            }
             return playlists && playlists.data ? (
               <List >
                 {playlists.data.items.map(playlist => {
@@ -84,12 +89,12 @@ const Playlists = ({token}) => {
           {(playlist,) => {
             if (playlist.data && playlist.data.tracks.items) {
               return playlist.data.tracks.items.map(track => (
-                <h1 style={{ paddingLeft: '20px'}}key={track.track.id}>{track.track.name}</h1>
+                <h3 style={{ paddingLeft: '20px'}}key={track.track.id}>{track.track.name}</h3>
               ))
             }
             return playlist && playlist.name ? <h1>{playlist.name}</h1> : null
           }}
-        </Playlist> : 'Select a Playlist'}
+        </Playlist> : <Typography align='center' variant='h5' >{'<- Select a Playlist'}</Typography>}
       </Grid>
     </Grid>
   )

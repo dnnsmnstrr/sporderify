@@ -8,7 +8,8 @@ import {
   Tooltip,
   IconButton,
   Menu,
-  MenuItem
+  MenuItem,
+  ListItemText
 } from '@material-ui/core'
 
 import {
@@ -88,7 +89,7 @@ const Toolbar = ({selectedPlaylist, onSortDown, onSortUp}) => {
               <MenuItem onClick={handleClose}>Followers: {data.followers.total}</MenuItem>
               <MenuItem onClick={handleClose}>Subscription: {data.product}</MenuItem>
             </>}
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            <MenuItem onClick={handleLogout}><ListItemText primaryTypographyProps={{color: 'error'}}>Logout</ListItemText></MenuItem>
           </Menu>
         </div>
         <Typography variant="h6" className={classes.title}>
