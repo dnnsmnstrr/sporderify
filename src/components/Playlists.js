@@ -69,7 +69,7 @@ const Playlists = ({token}) => {
       <Grid item xs={3}>
         <UserPlaylists>
           {(playlists) =>{
-            if (!selectedPlaylist) {
+            if (!selectedPlaylist && playlists && playlists.data && playlists.data.items) {
               setSelectedPlaylist(playlists.data.items[0])
             }
             return playlists && playlists.data ? (
