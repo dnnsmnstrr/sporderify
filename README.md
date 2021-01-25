@@ -6,6 +6,9 @@ Who needs this? No one. But I made it anyway.
 
 Consider making a backup of your playlist before trying any of this. 
 
+### Related Projects
+- https://github.com/superbahbi/Playlistify
+- https://github.com/christianmemije/sortify
 ___
 
 # Getting Started with Create React App
